@@ -10,13 +10,13 @@ import UIKit
 class WeatherView: UIView {
     let bgImage = UIImageView(image: UIImage(named: "bg")!)
     
-    let geoButton = UIButton(systemName: "paperplane.fill")
-    let searchTF = UITextField(placeholder: "Поиск")
+    let locationButton = UIButton(systemName: "paperplane.fill")
+    let searchTF = UITextField(placeholder: "Введите город")
     let searchButton = UIButton(systemName: "magnifyingglass")
     
     let conditionImage = UIImageView()
     let temperatureLabel = UILabel(text: "21ºC")
-    let cityLabel = UILabel(text: "London")
+    let cityLabel = UILabel(text: "Лондон")
     
     init() {
         super.init(frame: CGRect())
@@ -24,13 +24,15 @@ class WeatherView: UIView {
     }
     func setupUI() {
         bgImage.contentMode = .scaleAspectFill
+        searchTF.returnKeyType = .go
         
         conditionImage.image = UIImage(systemName: "sun.max")
-        conditionImage.tintColor = .black
+        conditionImage.tintColor = UIColor(named: "weatherColor")
+        conditionImage.contentMode = .scaleAspectFit
         
         temperatureLabel.font = UIFont(name: "Gilroy-Bold", size: 80)
         
-        let topStack = UIStackView(arrangedSubviews: [geoButton,
+        let topStack = UIStackView(arrangedSubviews: [locationButton,
                                                       searchTF,
                                                       searchButton,])
         topStack.axis = .horizontal
@@ -59,7 +61,6 @@ class WeatherView: UIView {
             stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             stack.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-//            searchTF.widthAnchor.constraint(equalTo: stack.widthAnchor),
             searchTF.widthAnchor.constraint(equalToConstant: 300),
             
             conditionImage.widthAnchor.constraint(equalToConstant: 120),
@@ -76,14 +77,14 @@ extension UILabel {
     convenience init(text: String) {
         self.init()
         self.text = text
-        textColor = .black
+        textColor = UIColor(named: "weatherColor")
         font = UIFont(name: "Gilroy-Regular", size: 40)
     }
 }
 extension UIButton {
     convenience init(systemName: String) {
         self.init(type: .system)
-        tintColor = .black
+        tintColor = UIColor(named: "weatherColor")
         setImage(UIImage(systemName: systemName), for: .normal)
         widthAnchor.constraint(equalToConstant: 40).isActive = true
         heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -94,13 +95,14 @@ extension UITextField {
         self.init()
         self.placeholder = placeholder
         backgroundColor = .clear
+        textAlignment = .right
         font = UIFont(name: "Gilroy-Regular", size: 25)
         layer.borderWidth = 0.5
         layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
         layer.cornerRadius = 12
-
-        leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 0)) // Левый отступ
-        leftViewMode = .always
+        
+        rightView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 0)) ///правый отступ
+        rightViewMode = .always
     }
 }
 
@@ -119,3 +121,4 @@ struct WeatherViewProvider: PreviewProvider {
         func updateUIView(_ uiView: UIViewType, context: Context) { }
     }
 }
+
